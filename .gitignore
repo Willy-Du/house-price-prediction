@@ -13,8 +13,9 @@ venv/
 mlruns/
 
 # Docker
-**/Dockerfile
 **/docker-compose.yml
+!backend/Dockerfile
+!frontend/Dockerfile
 
 # Node modules & build
 frontend/node_modules/
