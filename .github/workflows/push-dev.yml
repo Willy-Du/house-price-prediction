@@ -1,0 +1,14 @@
+name: Push to Dev - Deploy Staging
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  simulate-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simulate staging deployment
+        run: echo "Pretending to deploy to staging..."
