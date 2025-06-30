@@ -1,8 +1,16 @@
 import pytest
+import sys
+import os
 from fastapi.testclient import TestClient
+
+# Fix du PYTHONPATH pour que 'app' soit importable sur GitHub Actions
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from app import app
 
 client = TestClient(app)
+
+# ---------- UNIT TESTS ----------
 
 def test_prediction_success():
     response = client.post(
@@ -42,7 +50,8 @@ def test_missing_field():
     )
     assert response.status_code == 422
 
-## Integration tests
+# ---------- INTEGRATION TESTS ----------
+
 def test_integration_valid_data():
     response = client.post("/predict", json={
         "LotArea": 10000,
