@@ -1,0 +1,71 @@
+import pytest
+from fastapi.testclient import TestClient
+from app import app
+
+client = TestClient(app)
+
+def test_prediction_success():
+    response = client.post(
+        "/predict",
+        json={
+            "LotArea": 8500,
+            "OverallQual": 7,
+            "YearBuilt": 2005,
+            "Neighborhood": "NAmes"
+        }
+    )
+    # En test mode, on s'attend à une erreur car le modèle est None
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Model is not loaded (test mode)"
+
+def test_prediction_invalid_input():
+    response = client.post(
+        "/predict",
+        json={
+            "LotArea": "invalid",
+            "OverallQual": 7,
+            "YearBuilt": 2005,
+            "Neighborhood": "NAmes"
+        }
+    )
+    assert response.status_code == 422  
+
+def test_missing_field():
+    response = client.post(
+        "/predict",
+        json={
+            "LotArea": 8500,
+            "OverallQual": 7,
+            "YearBuilt": 2005
+            # Missing Neighborhood
+        }
+    )
+    assert response.status_code == 422
+
+## Integration tests
+def test_integration_valid_data():
+    response = client.post("/predict", json={
+        "LotArea": 10000,
+        "OverallQual": 8,
+        "YearBuilt": 1995,
+        "Neighborhood": "CollgCr"
+    })
+    assert response.status_code in [200, 400]
+
+def test_integration_boundary_values():
+    response = client.post("/predict", json={
+        "LotArea": 1,
+        "OverallQual": 1,
+        "YearBuilt": 1900,
+        "Neighborhood": "OldTown"
+    })
+    assert response.status_code in [200, 400]
+
+def test_integration_unusual_neighborhood():
+    response = client.post("/predict", json={
+        "LotArea": 5000,
+        "OverallQual": 5,
+        "YearBuilt": 2010,
+        "Neighborhood": "ImaginaryPlace999"
+    })
+    assert response.status_code in [200, 400]

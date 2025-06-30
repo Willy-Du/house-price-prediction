@@ -1,0 +1,30 @@
+name: Backend Tests (Pull Requests Only)
+
+on:
+  pull_request:
+    branches: [dev]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TESTING: "1"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.9"
+
+    - name: Install dependencies
+      working-directory: backend
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
+
+    - name: Run tests
+      working-directory: backend
+      run: pytest test/
