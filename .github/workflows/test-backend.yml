@@ -33,4 +33,4 @@ jobs:
       working-directory: backend
       env:
         PYTHONPATH: .
-      run: pytest tests/
+      run: pytest test/
