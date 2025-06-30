@@ -29,3 +29,15 @@ def test_prediction_invalid_input():
         }
     )
     assert response.status_code == 422  
+
+def test_missing_field():
+    response = client.post(
+        "/predict",
+        json={
+            "LotArea": 8500,
+            "OverallQual": 7,
+            "YearBuilt": 2005
+            # Missing Neighborhood
+        }
+    )
+    assert response.status_code == 422
