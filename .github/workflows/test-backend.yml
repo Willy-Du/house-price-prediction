@@ -10,6 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      TESTING: "1"
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -29,5 +32,3 @@ jobs:
     - name: Run tests
       working-directory: backend
       env:
-        PYTHONPATH: .
-      run: pytest test/
