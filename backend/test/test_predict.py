@@ -41,3 +41,31 @@ def test_missing_field():
         }
     )
     assert response.status_code == 422
+
+## Integration tests
+def test_integration_valid_data():
+    response = client.post("/predict", json={
+        "LotArea": 10000,
+        "OverallQual": 8,
+        "YearBuilt": 1995,
+        "Neighborhood": "CollgCr"
+    })
+    assert response.status_code in [200, 400]
+
+def test_integration_boundary_values():
+    response = client.post("/predict", json={
+        "LotArea": 1,
+        "OverallQual": 1,
+        "YearBuilt": 1900,
+        "Neighborhood": "OldTown"
+    })
+    assert response.status_code in [200, 400]
+
+def test_integration_unusual_neighborhood():
+    response = client.post("/predict", json={
+        "LotArea": 5000,
+        "OverallQual": 5,
+        "YearBuilt": 2010,
+        "Neighborhood": "ImaginaryPlace999"
+    })
+    assert response.status_code in [200, 400]
