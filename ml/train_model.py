@@ -11,6 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
+import joblib
 
 mlruns_path = pathlib.Path(__file__).parent.parent / "mlruns"
 mlruns_uri = mlruns_path.as_uri()
@@ -60,3 +61,6 @@ with mlflow.start_run():
     mlflow.sklearn.log_model(model, "model", registered_model_name="house-price-model")
 
     print(f"MAE: {mae:.2f}")
+
+
+joblib.dump(model, "backend/model.pkl")
