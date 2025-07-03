@@ -1,4 +1,4 @@
-name: Backend Tests (Pull Requests Only)
+name: PR - Run Backend Tests
 
 on:
   pull_request:
@@ -11,20 +11,19 @@ jobs:
       TESTING: "1"
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.9"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
 
-    - name: Install dependencies
-      working-directory: backend
-      run: |
-        pip install -r requirements.txt
-        pip install pytest
+      - name: Install dependencies
+        working-directory: backend
+        run: |
+          pip install -r requirements.txt
+          pip install pytest httpx
 
-    - name: Run tests
-      working-directory: backend
-      run: pytest test/
+      - name: Run tests
+        working-directory: backend
+        run: pytest
