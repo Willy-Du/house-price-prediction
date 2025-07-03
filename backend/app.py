@@ -5,7 +5,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-# Initialisation du modèle
 model = None
 model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
 
@@ -14,12 +13,10 @@ if os.path.exists(model_path):
         model = joblib.load(model_path)
         print("✅ Model loaded successfully.")
     except Exception as e:
-        print("❌ ERROR loading model:", e)
+        print("ERROR loading model:", e)
         raise RuntimeError(f"Could not load model: {e}")
 else:
-    print("❌ model.pkl not found. Model will not be loaded.")
-
-# Définition des données d’entrée
+    print("model.pkl not found. Model will not be loaded.")
 class HouseFeatures(BaseModel):
     LotArea: float
     OverallQual: int

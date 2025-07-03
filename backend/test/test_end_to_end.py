@@ -1,7 +1,7 @@
 import httpx
 import pytest
 
-BASE_URL = "https://ml-backend-production-991c.up.railway.app"
+BASE_URL = "https://backend-production-05cd.up.railway.app"
 
 def test_e2e_docs_accessible():
     response = httpx.get(f"{BASE_URL}/docs")

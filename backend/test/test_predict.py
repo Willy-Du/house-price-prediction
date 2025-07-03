@@ -3,7 +3,6 @@ import sys
 import os
 from fastapi.testclient import TestClient
 
-# Fix du PYTHONPATH pour que 'app' soit importable sur GitHub Actions
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import app
@@ -22,9 +21,9 @@ def test_prediction_success():
             "Neighborhood": "NAmes"
         }
     )
-    # En test mode, on s'attend à une erreur car le modèle est None
-    assert response.status_code == 400
-    assert response.json()["detail"] == "Model is not loaded (test mode)"
+    assert response.status_code == 200
+    assert "estimated_price" in response.json()
+
 
 def test_prediction_invalid_input():
     response = client.post(

@@ -56,7 +56,6 @@ with mlflow.start_run():
     predictions = model.predict(X_test)
     mae = mean_absolute_error(y_test, predictions)
 
-    # Log metrics et modèle
     mlflow.log_metric("MAE", mae)
     mlflow.sklearn.log_model(model, "model", registered_model_name="house-price-model")
 
