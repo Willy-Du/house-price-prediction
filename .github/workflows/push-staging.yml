@@ -1,4 +1,4 @@
-name: Push to Staging - Full Build & Test
+name: Push to Staging - Run Tests
 
 on:
   push:
@@ -8,8 +8,6 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-    env:
-      TESTING: "1"
 
     steps:
       - uses: actions/checkout@v3
@@ -17,14 +15,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
+        working-directory: backend
         run: |
-          pip install -r backend/requirements.txt
-          pip install pytest
+          pip install -r requirements.txt
+          pip install pytest httpx
 
       - name: Run backend tests
-        run: |
-          cd backend
-          pytest
+        working-directory: backend
+        run: pytest
